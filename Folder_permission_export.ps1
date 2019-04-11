@@ -28,8 +28,12 @@ Get-ChildItem $export_loc\ | Remove-Item -Force
 
 $folderlists = Get-ChildItem $loc -Directory | where {$_.PsIsContainer}
 foreach ($folderlist in $folderlists) {
+    Write-Host "Exporting ACL for the share"$folderlist.BaseName -ForegroundColor Yellow
+    export_acl_csv $folderlist.BaseName $folderlist.FullName
     $second_lists = Get-ChildItem $folderlist.FullName | where {($_.PsIsContainer) -and ($_.name -ne 'fempr')}
     foreach ($second_list in $second_lists) {
+        Write-Host "Exporting ACL for the share"$second_list.BaseName -ForegroundColor Yellow
+        export_acl_csv $folderlist.BaseName $second_list.FullName
         $third_lists = Get-ChildItem $second_list.FullName | where {$_.PsIsContainer}
         if ($third_lists -eq $null) {
                 Write-Host "Exporting ACL for the share"$second_list.BaseName -ForegroundColor Yellow
